@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Shapp</string>
+    
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="button1">Report</string>
+    <string name="button2">Light</string>
+    <string name="button3">Maps</string>
+    <string name="button4">Analytics</string>
+    <string name="button5">Settings</string>
+    <string name="button6">Contact</string>
+
+
+
+</resources>
