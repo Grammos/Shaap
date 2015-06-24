@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="shapp.odk.org.shapp" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,6 +19,66 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <activity android:name=".Report">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="shapp.odk.org.shapp.Report"/>
+            <intent-filter>
+                <action android:name="shapp.odk.org.shapp.Report" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".Light">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="shapp.odk.org.shapp.Light"/>
+            <intent-filter>
+                <action android:name="shapp.odk.org.shapp.Light" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".Maps">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="shapp.odk.org.shapp.Maps"/>
+            <intent-filter>
+                <action android:name="shapp.odk.org.shapp.Maps" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".Analytics">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="shapp.odk.org.shapp.Analytics"/>
+            <intent-filter>
+                <action android:name="shapp.odk.org.shapp.Analytics" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".Settings">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="shapp.odk.org.shapp.Settings"/>
+            <intent-filter>
+                <action android:name="shapp.odk.org.shapp.Settings" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".Contact">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="shapp.odk.org.shapp.Contact"/>
+            <intent-filter>
+                <action android:name="shapp.odk.org.shapp.Contact" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+    </application>
 </manifest>

@@ -11,7 +11,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.TextView;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,22 +26,63 @@ public class MainScreen extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
-        GridView gridView = (GridView)findViewById(R.id.gridview);
-        gridView.setAdapter(new MyAdapter(this));
 
-        /**
+        GridView gridView = (GridView)findViewById(R.id.gridview);
+        // Create the Custom Adapter Object
+        MyAdapter myAdapter = new MyAdapter(this);
+        // Set the Adapter to GridView
+        gridView.setAdapter(myAdapter);
+
+
+        // Handling touch/click Event on GridView Item
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ImageView item = (ImageView) view.setOnClickListener();
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long id) {
+
+                switch(i){
+                    case 0:
+                        Intent intent1 = new Intent(getApplicationContext(), Report.class);
+                        startActivity(intent1);
+                        break;
+
+                    case 1:
+                        Intent intent2 = new Intent(getApplicationContext(), Light.class );
+                        startActivity(intent2);
+                        break;
+
+                    case 2:
+                        Intent intent3 = new Intent(getApplicationContext(), Maps.class );
+                        startActivity(intent3);
+                        break;
+
+                    case 3:
+                        Intent intent4 = new Intent(getApplicationContext(), Analytics.class );
+                        startActivity(intent4);
+                        break;
+
+                    case 4:
+                        Intent intent5 = new Intent(getApplicationContext(), Settings.class );
+                        startActivity(intent5);
+                        break;
+
+                    case 5:
+                        Intent intent6 = new Intent(getApplicationContext(), Contact.class );
+                        startActivity(intent6);
+                        break;
+
+
+
+
+                }
             }
-        });*/
+        });
 
     }
 
     private class MyAdapter extends BaseAdapter
     {
-        private List<Item> items = new ArrayList<Item>();
+        private List<Item> items = new ArrayList<>();
         private LayoutInflater inflater;
 
         public MyAdapter(Context context)
@@ -82,7 +123,6 @@ public class MainScreen extends Activity
         {
             View v = view;
             ImageView picture;
-            TextView name;
 
             if(v == null)
             {

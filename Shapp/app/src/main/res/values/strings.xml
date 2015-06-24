@@ -3,13 +3,16 @@
     
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="button1">Report</string>
-    <string name="button2">Light</string>
-    <string name="button3">Maps</string>
-    <string name="button4">Analytics</string>
-    <string name="button5">Settings</string>
-    <string name="button6">Contact</string>
+    <string name="report">It will report the type of sexual harassment!</string>
+    <string name="light">It will collect the coordinates after is being click!</string>
+    <string name="maps">It will show the maps!</string>
+    <string name="analytics">It will show the analytics charts!</string>
+    <string name="settings">Not specified yet!</string>
+    <string name="contact">It will shows the contacts!</string>
+
     <color name="beige">#DCDCDC</color>
+
+
 
 
 
