@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+
 
 
 import java.util.ArrayList;
@@ -44,31 +46,37 @@ public class MainScreen extends Activity
                     case 0:
                         Intent intent1 = new Intent(getApplicationContext(), Report.class);
                         startActivity(intent1);
+                        Log.d("REPORT ","BUTTON "+ intent1);
                         break;
 
                     case 1:
                         Intent intent2 = new Intent(getApplicationContext(), Light.class );
                         startActivity(intent2);
+                        Log.d("LIGHT ", "BUTTON " + intent2);
                         break;
 
                     case 2:
                         Intent intent3 = new Intent(getApplicationContext(), Maps.class );
                         startActivity(intent3);
+                        Log.d("MAPS ", "BUTTON " + intent3);
                         break;
 
                     case 3:
                         Intent intent4 = new Intent(getApplicationContext(), Analytics.class );
                         startActivity(intent4);
+                        Log.d("ANALYTICS ", "BUTTON " + intent4);
                         break;
 
                     case 4:
                         Intent intent5 = new Intent(getApplicationContext(), Settings.class );
                         startActivity(intent5);
+                        Log.d("SETTINGS ", "BUTTON " + intent5);
                         break;
 
                     case 5:
                         Intent intent6 = new Intent(getApplicationContext(), Contact.class );
                         startActivity(intent6);
+                        Log.d("CONTACT ", "BUTTON" + intent6);
                         break;
 
 

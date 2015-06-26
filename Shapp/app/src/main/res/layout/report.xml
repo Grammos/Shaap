@@ -4,10 +4,17 @@
     android:layout_height="match_parent"
     android:weightSum="1">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/report"
-        android:text="@string/report"
-        android:layout_weight="1.13" />
+
+    <GridView
+            android:id="@+id/gridview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/beige"
+            android:verticalSpacing="0dp"
+            android:horizontalSpacing="0dp"
+            android:stretchMode="columnWidth"
+            android:numColumns="2" />
+
+
+
 </LinearLayout>
