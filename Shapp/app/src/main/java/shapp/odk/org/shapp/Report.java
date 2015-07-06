@@ -2,8 +2,9 @@ package shapp.odk.org.shapp;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,11 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,30 +32,20 @@ public class Report extends Activity {
 
         GridView gridView = (GridView)findViewById(R.id.gridview);
         // Create the Custom Adapter Object
-        MyAdapter myAdapter = new MyAdapter(this);
+        MyAdapter myAdapter = null;
+        try {
+            myAdapter = new MyAdapter(this);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         // Set the Adapter to GridView
         gridView.setAdapter(myAdapter);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long id)
-            {
-                //for the sake of the task i will do the switch condition just for right now!!
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long id) {
 
-                switch (i){
-                    case 0:
-                        Intent intent1 = new Intent(getApplicationContext(), Report.class);
-                        Log.d("VERBAL ", "BUTTON " + intent1);
-                        break;
-                    case 1:
-                        Intent intent2 = new Intent(getApplicationContext(), Report.class);
-                        Log.d("STALKING ", "BUTTON " + intent2);
-                        break;
-
-
-                }
 
             }
 
@@ -62,12 +58,45 @@ public class Report extends Activity {
         private List<Item> items = new ArrayList<>();
         private LayoutInflater inflater;
 
-        public MyAdapter(Context context)
-        {
+        public MyAdapter(Context context) throws JSONException {
+
+            String harassmentsJsonString = "[{\"imageUrl\": \"https://placeholdit.imgix.net/~text?txtsize=33&txt=Verbal&w=300&h=300\", \"id\": \"verbal\", \"name\": \"Verbal\"}," +
+                    "{\"imageUrl\": \"https://placeholdit.imgix.net/~text?txtsize=33&txt=Stalking&w=300&h=300\", \"id\": \"stalking\", \"name\": \"Stalking\"}  ]";
+
+
+            JSONArray harassmentJsonArray= new JSONArray(harassmentsJsonString);
+
+            for (int i = 0; i < harassmentJsonArray.length(); i++){
+
+                JSONObject harassment = harassmentJsonArray.getJSONObject(i);
+
+                String imageUrl = harassment.getString("imageUrl");
+                String harassmentName =  harassment.getString("name");
+                String harassmentId = harassment.getString("id");
+
+                items.add(new Item(harassmentName, R.drawable.tree1));
+
+                //Log.d("check this", "" +imageUrl);
+
+            }
+
+
+
+
+
+
+
+
             inflater = LayoutInflater.from(context);
 
-            items.add(new Item("Image 1", R.drawable.nature1));
-            items.add(new Item("Image 2", R.drawable.nature2));
+            // 1. loop through the json array
+            // 2. for each json object in the json array: add new item to the grid. Hardcode image for now.
+            // 3. Add a third object to the json array (Groping). See if it appears on the grid!
+            // 4. Remove hardcoded images: Figure out how to create the button image from the image URL.
+
+           // items.add(new Item("Verbal", R.drawable.nature1));
+           // items.add(new Item("Stalking", R.drawable.nature2));
+
 
 
         }

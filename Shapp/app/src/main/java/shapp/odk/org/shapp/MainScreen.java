@@ -97,12 +97,12 @@ public class MainScreen extends Activity
         {
             inflater = LayoutInflater.from(context);
 
-            items.add(new Item("Image 1", R.drawable.nature1));
-            items.add(new Item("Image 2", R.drawable.nature2));
+            items.add(new Item("Image 1", R.drawable.verbal));
+            items.add(new Item("Image 2", R.drawable.stalcking));
             items.add(new Item("Image 3", R.drawable.tree1));
             items.add(new Item("Image 4", R.drawable.nature3));
             items.add(new Item("Image 5", R.drawable.tree2));
-            items.add(new Item("Image 6", R.drawable.nature1));
+            items.add(new Item("Image 6", R.drawable.verbal));
 
 
 
@@ -148,6 +148,9 @@ public class MainScreen extends Activity
             return v;
         }
 
+        /**
+         * This class blahv lahas
+         */
         private class Item
         {
             final String name;
