@@ -5,15 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
 
 
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +34,9 @@ public class MainScreen extends Activity
 
         GridView gridView = (GridView)findViewById(R.id.gridview);
         // Create the Custom Adapter Object
-        MyAdapter myAdapter = new MyAdapter(this);
+        MainScreenAdapter mainScreenAdapter = new MainScreenAdapter(this);
         // Set the Adapter to GridView
-        gridView.setAdapter(myAdapter);
+        gridView.setAdapter(mainScreenAdapter);
 
 
         // Handling touch/click Event on GridView Item
@@ -92,80 +95,101 @@ public class MainScreen extends Activity
 
     }
 
-    private class MyAdapter extends BaseAdapter
+    private class MainScreenAdapter extends BaseAdapter
     {
-        private List<Item> items = new ArrayList<>();
-        private LayoutInflater inflater;
+        private final Context contextReport;
+        private final List<String> urlsButtonPics = new ArrayList<>();
 
-        public MyAdapter(Context context)
+        public MainScreenAdapter(Context contextMain)
         {
-            inflater = LayoutInflater.from(context);
+            this.contextReport = contextMain;
+            // Ensure we get a different ordering of images on each run.
 
-            items.add(new Item("Image 1", R.drawable.verbal));
-            items.add(new Item("Image 2", R.drawable.stalcking));
-            items.add(new Item("Image 3", R.drawable.tree1));
-            items.add(new Item("Image 4", R.drawable.nature3));
-            items.add(new Item("Image 5", R.drawable.tree2));
-            items.add(new Item("Image 6", R.drawable.verbal));
+            //urlsButtonPics.add("https://forums.digitalpoint.com/proxy/V%2FlNRoM4xGeK5YYhZVYcS%2B9mKLD4rQceAt2HpNNZGKK%2BHZpMfoiRYQ7ix2kpUgWra42tnY7BAVsNJQ7S%2FjO7x9qBnsoK7JVSpOe4p9UJ6N8%2FcgLNOQ%3D%3D/image.png");
+            //urlsButtonPics.add("https://forums.digitalpoint.com/proxy/V%2FlNRoM4xGeK5YYhZVYcS%2B9mKLD4rQceAt2HpNNZGKK%2BHZpMfoiRYQ7ix2kpUgWra42tnY7BAVsNJQ7S%2FjO7x9qBnsoK7JVSpOe4p9UJ6N8%2FcgLNOQ%3D%3D/image.png");
+
+            String harassmentJsonString = "[{\"imageUrl\": \"https://placeholdit.imgix.net/~text?txtsize=33&txt=Report&w=300&h=300\", \"id\": \"report\", \"name\": \"Report\"}," +
+                    "{\"imageUrl\": \"https://placeholdit.imgix.net/~text?txtsize=33&txt=Light&w=300&h=300\", \"id\": \"light\", \"name\": \"Light\"},"+
+                    "{\"imageUrl\": \"https://placeholdit.imgix.net/~text?txtsize=33&txt=Maps&w=300&h=300\", \"id\": \"maps\", \"name\": \"Maps\"},"+
+                    "{\"imageUrl\": \"https://placeholdit.imgix.net/~text?txtsize=33&txt=Analytics&w=300&h=300\", \"id\": \"analytics\", \"name\": \"Analytics\"},"+
+                    "{\"imageUrl\": \"https://placeholdit.imgix.net/~text?txtsize=33&txt=Settings&w=300&h=300\", \"id\": \"settings\", \"name\": \"Settings\"},"+
+                    "{\"imageUrl\": \"https://placeholdit.imgix.net/~text?txtsize=33&txt=Contact&w=300&h=300\", \"id\": \"contact\", \"name\": \"Contact\"}]" ;
+
+            try {
+
+                JSONArray harassmentJsonArray= new JSONArray(harassmentJsonString);
+
+                for (int i = 0; i < harassmentJsonArray.length(); i++) {
+
+                    JSONObject harassment = harassmentJsonArray.getJSONObject(i);
+                    String imageUrl = harassment.getString("imageUrl");
+                    String harassmentName =  harassment.getString("name");
+                    String harassmentId = harassment.getString("id");
+                    urlsButtonPics.add(imageUrl);
+
+                    //Log.d("hello",""+ imageUrl);
+                    //Log.d("hello",""+ harassmentName);
+                    //Log.d("hello",""+ harassmentId);
 
 
+                }
 
+                //urlsButtonPics.add(harassmentJsonString);
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+            // Triple up the list.
+            //ArrayList<String> copy = new ArrayList<String>(urlsButtonPics);
+            //.addAll(copy);
+            //urlsButtonPics.addAll(copy);
         }
 
 
         @Override
         public int getCount() {
-            return items.size();
+            return urlsButtonPics.size();
         }
 
         @Override
-        public Object getItem(int i)
-        {
-            return items.get(i);
+        public String getItem(int position) {
+            return urlsButtonPics.get(position);
         }
 
         @Override
-        public long getItemId(int i)
-        {
-            return items.get(i).drawableId;
+        public long getItemId(int position) {
+            return position;
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup)
-        {
-            View v = view;
-            ImageView picture;
+        public View getView(int position, View convertView, ViewGroup parent) {
 
-            if(v == null)
-            {
-                v = inflater.inflate(R.layout.gridview_item, viewGroup, false);
-                v.setTag(R.id.picture, v.findViewById(R.id.picture));
+            CircledImageView view = (CircledImageView) convertView;
+            if (view == null) {
+                view = new CircledImageView(contextReport);
+
             }
 
-            picture = (ImageView)v.getTag(R.id.picture);
-
-            Item item = (Item)getItem(i);
-
-            picture.setImageResource(item.drawableId);
 
 
-            return v;
+            // Get the image URL for the current position.
+            String url = getItem(position);
+
+            // Trigger the download of the URL asynchronously into the image view.
+            Picasso.with(contextReport) //
+                    .load(url) //
+                    .placeholder(R.drawable.tree1) //
+                    .error(R.drawable.tree2) //
+                    .fit() //
+                    .tag(contextReport) //
+                    .into(view);
+
+            return view;
         }
 
-        /**
-         * This class blahv lahas
-         */
-        private class Item
-        {
-            final String name;
-            final int drawableId;
-
-            Item(String name, int drawableId)
-            {
-                this.name = name;
-                this.drawableId = drawableId;
-            }
-        }
 
     }
 

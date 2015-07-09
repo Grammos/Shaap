@@ -3,12 +3,11 @@ package shapp.odk.org.shapp;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
+
 
 import com.squareup.picasso.Picasso;
 
@@ -50,7 +49,7 @@ public class Report extends Activity {
     private class ReportAdapter extends BaseAdapter
     {
         private final Context contextReport;
-        private final List<String> urlsButtonPics = new ArrayList<String>();
+        private final List<String> urlsButtonPics = new ArrayList<>();
 
         public ReportAdapter(Context contextReport)
         {
@@ -79,9 +78,9 @@ public class Report extends Activity {
                     String harassmentId = harassment.getString("id");
                     urlsButtonPics.add(imageUrl);
 
-                    Log.d("hello",""+ imageUrl);
-                    Log.d("hello",""+ harassmentName);
-                    Log.d("hello",""+ harassmentId);
+                    //Log.d("hello",""+ imageUrl);
+                    //Log.d("hello",""+ harassmentName);
+                    //Log.d("hello",""+ harassmentId);
 
 
                 }
