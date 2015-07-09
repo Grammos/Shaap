@@ -37,6 +37,10 @@ public class MainScreen extends Activity
 
 
         // Handling touch/click Event on GridView Item
+
+        /**Interface definition for a callback to be invoked when an item in this AdapterView has been clicked.
+         * please read more at http://developer.android.com/reference/android/widget/AdapterView.OnItemClickListener.html
+         */
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override

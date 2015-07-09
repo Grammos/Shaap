@@ -91,5 +91,4 @@ public class CircledImageView extends ImageView {
     }
 
 
-
 }
