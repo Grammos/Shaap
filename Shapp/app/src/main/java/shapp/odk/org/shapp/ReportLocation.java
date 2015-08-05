@@ -1,13 +1,12 @@
 package shapp.odk.org.shapp;
 
+
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 
@@ -25,13 +24,13 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Report extends Activity {
+public class ReportLocation extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.report);
+        setContentView(R.layout.reportlocation);
 
         /**
          * GridView is a ViewGroup that displays items in a two-dimensional, scrollable grid.
@@ -40,18 +39,9 @@ public class Report extends Activity {
 
         GridView gridView = (GridView)findViewById(R.id.gridview);
         // Create the Custom Adapter Object
-        ReportAdapter reportAdapter = new ReportAdapter(this);
+        ReportLocationAdapter reportLocationAdapter = new ReportLocationAdapter(this);
         // Set the Adapter to GridView
-        gridView.setAdapter(reportAdapter);
-
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent reportLocationScreen = new Intent(getApplicationContext(), ReportLocation.class);
-                startActivity(reportLocationScreen);
-            }
-
-        });
+        gridView.setAdapter(reportLocationAdapter);
 
     }
 
@@ -60,21 +50,21 @@ public class Report extends Activity {
      *
      */
 
-    private class ReportAdapter extends BaseAdapter
+    private class ReportLocationAdapter extends BaseAdapter
     {
-        private final Context contextReport;
+        private final Context contextLocationReport;
         private final List<String> urlsButtonPics = new ArrayList<>();
 
-        public ReportAdapter(Context contextReport)
+        public ReportLocationAdapter(Context contextReportLocation)
         {
-            this.contextReport = contextReport;
+            this.contextLocationReport = contextReportLocation;
 
             try {
 
 
 
 
-                String reportScreen = "";
+                String reportLocationScreen = "";
 
                 try {
                     InputStream inputStream = openFileInput("config.json");
@@ -90,7 +80,9 @@ public class Report extends Activity {
                         }
 
                         inputStream.close();
-                        reportScreen = stringBuilder.toString();
+                        reportLocationScreen = stringBuilder.toString();
+
+                        //Log.d("QAO QAO",""+ret);
                     }
                 }
                 catch (FileNotFoundException e) {
@@ -102,11 +94,12 @@ public class Report extends Activity {
 
 
 
-                JSONObject harassmentJsonArrayReport= new JSONObject(reportScreen);
-                JSONArray harassmentJsonTypesReport =new JSONArray(harassmentJsonArrayReport.getJSONObject("reports").getJSONArray("types").toString());
-                for (int i = 0; i < harassmentJsonTypesReport.length(); i++) {
+                JSONObject harassmentJsonArrayReportLoc= new JSONObject(reportLocationScreen);
+                Log.d("KOSOVO",""+harassmentJsonArrayReportLoc);
+                JSONArray harassmentJsonTypesLoc =new JSONArray(harassmentJsonArrayReportLoc.getJSONObject("locations").getJSONArray("types").toString());
+                for (int i = 0; i < harassmentJsonTypesLoc.length(); i++) {
 
-                    JSONObject harassment = harassmentJsonTypesReport.getJSONObject(i);
+                    JSONObject harassment = harassmentJsonTypesLoc.getJSONObject(i);
                     String imageUrl = harassment.getString("imageUrl");
                     String harassmentName =  harassment.getString("name");
                     String harassmentId = harassment.getString("id");
@@ -144,7 +137,7 @@ public class Report extends Activity {
 
             CircledImageView view = (CircledImageView) convertView;
             if (view == null) {
-                view = new CircledImageView(contextReport);
+                view = new CircledImageView(contextLocationReport);
 
             }
 
@@ -152,12 +145,12 @@ public class Report extends Activity {
             String url = getItem(position);
 
             // Trigger the download of the URL asynchronously into the image view.
-            Picasso.with(contextReport) //
+            Picasso.with(contextLocationReport) //
                     .load(url) //
                     .placeholder(R.drawable.error) //
                     .error(R.drawable.error) //
                     .fit() //
-                    .tag(contextReport) //
+                    .tag(contextLocationReport) //
                     .into(view);
 
             return view;

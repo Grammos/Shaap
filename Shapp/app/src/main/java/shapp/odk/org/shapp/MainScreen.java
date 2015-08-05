@@ -4,19 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-
-
-import com.squareup.picasso.Picasso;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +23,12 @@ public class MainScreen extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+
+
         setContentView(R.layout.activity_main_screen);
+
+
 
 
         GridView gridView = (GridView)findViewById(R.id.gridview);
@@ -37,6 +36,12 @@ public class MainScreen extends Activity
         MainScreenAdapter mainScreenAdapter = new MainScreenAdapter(this);
         // Set the Adapter to GridView
         gridView.setAdapter(mainScreenAdapter);
+
+        RequestHandlerApi requestHandlerApi = new RequestHandlerApi(this);
+        requestHandlerApi.execute("http://10.0.2.2:5000/geo-api");
+        //Log.d("WHAT?!",""+requestHandlerApi);
+        requestHandlerApi.getStatus();
+
 
 
         // Handling touch/click Event on GridView Item
@@ -46,153 +51,165 @@ public class MainScreen extends Activity
          */
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+
+
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long id) {
 
-                switch(i){
+                switch (i) {
+
+                    /*
+                     * An Intent provides a facility for performing late runtime binding between the code in different applications.
+                     * Its most significant use is in the launching of activities, where it can be thought of as the glue between activities.
+                     * It is basically a passive data structure holding an abstract description of an action to be performed.
+                     * please read more at http://developer.android.com/reference/android/content/Intent.html
+                     *
+                     *
+                     * method getApplicationContext():
+                     *  Return the context of the single, global Application object of the current process.
+                     *
+                     * I've used switch because I know that this screen for a long time will have the same
+                     * content so it's something predefined. :)!
+                   */
                     case 0:
-                        Intent intent1 = new Intent(getApplicationContext(), Report.class);
-                        startActivity(intent1);
-                        Log.d("REPORT ","BUTTON "+ intent1);
+                        Intent reportButton = new Intent(getApplicationContext(), Report.class);
+                        startActivity(reportButton);
+                        //Log.d("REPORT ","BUTTON "+ reportButton);
                         break;
 
                     case 1:
-                        Intent intent2 = new Intent(getApplicationContext(), Light.class );
-                        startActivity(intent2);
-                        Log.d("LIGHT ", "BUTTON " + intent2);
+                        Intent lightButton = new Intent(getApplicationContext(), Light.class);
+                        startActivity(lightButton);
+                        //Log.d("LIGHT ", "BUTTON " + lightButton);
                         break;
 
                     case 2:
-                        Intent intent3 = new Intent(getApplicationContext(), Maps.class );
-                        startActivity(intent3);
-                        Log.d("MAPS ", "BUTTON " + intent3);
+                        Intent mapsButton = new Intent(getApplicationContext(), Maps.class);
+                        startActivity(mapsButton);
+                        //Log.d("MAPS ", "BUTTON " + mapsButton);
                         break;
 
                     case 3:
-                        Intent intent4 = new Intent(getApplicationContext(), Analytics.class );
-                        startActivity(intent4);
-                        Log.d("ANALYTICS ", "BUTTON " + intent4);
+                        Intent analyticsButton = new Intent(getApplicationContext(), Analytics.class);
+                        startActivity(analyticsButton);
+                        //Log.d("ANALYTICS ", "BUTTON " + analyticsButton);
                         break;
 
                     case 4:
-                        Intent intent5 = new Intent(getApplicationContext(), Settings.class );
-                        startActivity(intent5);
-                        Log.d("SETTINGS ", "BUTTON " + intent5);
+                        Intent settingsButton = new Intent(getApplicationContext(), Settings.class);
+                        startActivity(settingsButton);
+                        //Log.d("SETTINGS ", "BUTTON " + settingsButton);
                         break;
 
                     case 5:
-                        Intent intent6 = new Intent(getApplicationContext(), Contact.class );
-                        startActivity(intent6);
-                        Log.d("CONTACT ", "BUTTON" + intent6);
+                        Intent contactButton = new Intent(getApplicationContext(), Contact.class);
+                        startActivity(contactButton);
+                        //Log.d("CONTACT ", "BUTTON" + contactButton);
                         break;
-
-
-
-
                 }
             }
-        });
 
+        });
     }
+
+
+    /*
+    * What is a Adapter?
+    * An Adapter object acts as a bridge between an AdapterView and the underlying data for that view.
+    * The Adapter provides access to the data items.
+    * The Adapter is also responsible for making a View for each item in the data set.
+    * What is a BaseAdapter?
+    * BaseAdapter is an abstract base class for the Adapter interface to simplify implementing adapters.
+    * You could implement your own, but the framework provides some pretty flexible adapters already.
+    * Some popular adapters are:
+    * ArrayAdapter,CursorAdapter, SimpleCursorAdapter. Please read more at this awesome comment:
+    * (first one)
+    * http://stackoverflow.com/questions/4799380/understanding-baseadapters-and-how-to-use-them
+    *
+    * */
 
     private class MainScreenAdapter extends BaseAdapter
     {
-        private final Context contextReport;
-        private final List<String> urlsButtonPics = new ArrayList<>();
-
-        public MainScreenAdapter(Context contextMain)
-        {
-            this.contextReport = contextMain;
-            // Ensure we get a different ordering of images on each run.
-
-            //urlsButtonPics.add("https://forums.digitalpoint.com/proxy/V%2FlNRoM4xGeK5YYhZVYcS%2B9mKLD4rQceAt2HpNNZGKK%2BHZpMfoiRYQ7ix2kpUgWra42tnY7BAVsNJQ7S%2FjO7x9qBnsoK7JVSpOe4p9UJ6N8%2FcgLNOQ%3D%3D/image.png");
-            //urlsButtonPics.add("https://forums.digitalpoint.com/proxy/V%2FlNRoM4xGeK5YYhZVYcS%2B9mKLD4rQceAt2HpNNZGKK%2BHZpMfoiRYQ7ix2kpUgWra42tnY7BAVsNJQ7S%2FjO7x9qBnsoK7JVSpOe4p9UJ6N8%2FcgLNOQ%3D%3D/image.png");
-
-            String harassmentJsonString = "[{\"imageUrl\": \"https://placeholdit.imgix.net/~text?txtsize=33&txt=Report&w=300&h=300\", \"id\": \"report\", \"name\": \"Report\"}," +
-                    "{\"imageUrl\": \"https://placeholdit.imgix.net/~text?txtsize=33&txt=Light&w=300&h=300\", \"id\": \"light\", \"name\": \"Light\"},"+
-                    "{\"imageUrl\": \"https://placeholdit.imgix.net/~text?txtsize=33&txt=Maps&w=300&h=300\", \"id\": \"maps\", \"name\": \"Maps\"},"+
-                    "{\"imageUrl\": \"https://placeholdit.imgix.net/~text?txtsize=33&txt=Analytics&w=300&h=300\", \"id\": \"analytics\", \"name\": \"Analytics\"},"+
-                    "{\"imageUrl\": \"https://placeholdit.imgix.net/~text?txtsize=33&txt=Settings&w=300&h=300\", \"id\": \"settings\", \"name\": \"Settings\"},"+
-                    "{\"imageUrl\": \"https://placeholdit.imgix.net/~text?txtsize=33&txt=Contact&w=300&h=300\", \"id\": \"contact\", \"name\": \"Contact\"}]" ;
-
-            try {
-
-                JSONArray harassmentJsonArray= new JSONArray(harassmentJsonString);
-
-                for (int i = 0; i < harassmentJsonArray.length(); i++) {
-
-                    JSONObject harassment = harassmentJsonArray.getJSONObject(i);
-                    String imageUrl = harassment.getString("imageUrl");
-                    String harassmentName =  harassment.getString("name");
-                    String harassmentId = harassment.getString("id");
-                    urlsButtonPics.add(imageUrl);
-
-                    //Log.d("hello",""+ imageUrl);
-                    //Log.d("hello",""+ harassmentName);
-                    //Log.d("hello",""+ harassmentId);
+        /* //Just some basics explanation for why i used final..
+        *    static means "not related to a particular instance at all" - final means you cannot change this value after
+        initialization
+        *       and this value must be initialized.
+        *   The combination of final and static gives you the ability to create constants. This is no longer recommended in a public way
+        *   (totally ok for e.g. magic numbers in a private context) as it's not type safe.
+        *
+        *
+        *  What is a Context?
+        *  As the name suggests, its the context of current state of the application/object. It lets newly created objects understand what has been going on.
+        *  Typically you call it to get information regarding another part of your program (activity, package/application)
+        *  please read more: http://stackoverflow.com/questions/3572463/what-is-context-in-android (first and second comments :)!
+        * */
 
 
-                }
+        private List<Item> items  = new ArrayList<>();
+        private LayoutInflater inflaterMainScreen;
 
-                //urlsButtonPics.add(harassmentJsonString);
+        public MainScreenAdapter(Context contextReport){
 
+            inflaterMainScreen = LayoutInflater.from(contextReport);
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            items.add(new Item("ReportButton", R.drawable.report));
+            items.add(new Item("LightButton", R.drawable.light));
+            items.add(new Item("MapsButton", R.drawable.maps));
+            items.add(new Item("AnalyticsButton", R.drawable.analytics));
+            items.add(new Item("SettingsButton", R.drawable.settings));
+            items.add(new Item("ContactButton", R.drawable.contact));
 
-
-            // Triple up the list.
-            //ArrayList<String> copy = new ArrayList<String>(urlsButtonPics);
-            //.addAll(copy);
-            //urlsButtonPics.addAll(copy);
         }
 
 
         @Override
         public int getCount() {
-            return urlsButtonPics.size();
+            return items.size();
         }
 
         @Override
-        public String getItem(int position) {
-            return urlsButtonPics.get(position);
+        public Object getItem(int position) {
+            return items.get(position);
         }
 
         @Override
         public long getItemId(int position) {
-            return position;
+            return items.get(position).drawableId;
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View view, ViewGroup parent) {
 
-            CircledImageView view = (CircledImageView) convertView;
-            if (view == null) {
-                view = new CircledImageView(contextReport);
+            View v = view;
+            ImageView picture;
 
+            if(v == null)
+            {
+                v = inflaterMainScreen.inflate(R.layout.gridview_item, parent, false);
+                v.setTag(R.id.picture, v.findViewById(R.id.picture));
             }
 
+            picture = (ImageView)v.getTag(R.id.picture);
+            Item item = (Item)getItem(position);
+            picture.setImageResource(item.drawableId);
 
+            return v;
+        }
 
-            // Get the image URL for the current position.
-            String url = getItem(position);
+        private class Item{
+            final String name;
+            final int drawableId;
 
-            // Trigger the download of the URL asynchronously into the image view.
-            Picasso.with(contextReport) //
-                    .load(url) //
-                    .placeholder(R.drawable.tree1) //
-                    .error(R.drawable.tree2) //
-                    .fit() //
-                    .tag(contextReport) //
-                    .into(view);
+            Item(String name, int drawableId)
+            {
+               this.name = name;
+               this.drawableId = drawableId;
+            }
 
-            return view;
         }
 
 
     }
-
 
 
 }
