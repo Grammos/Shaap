@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,8 @@ public class MainScreen extends Activity
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long id) {
 
+
+
                 switch (i) {
 
                     /*
@@ -72,7 +75,13 @@ public class MainScreen extends Activity
                      * content so it's something predefined. :)!
                    */
                     case 0:
-                        Intent reportButton = new Intent(getApplicationContext(), Report.class);
+                        Intent reportButton = new Intent(getApplicationContext(), ReportType.class);
+                        Context context = getApplicationContext();
+                        CharSequence text = "What is your harassment suffer?";
+                        int duration = Toast.LENGTH_LONG;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
                         startActivity(reportButton);
                         //Log.d("REPORT ","BUTTON "+ reportButton);
                         break;

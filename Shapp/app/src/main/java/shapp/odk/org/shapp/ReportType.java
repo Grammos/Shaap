@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -25,7 +26,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Report extends Activity {
+public class ReportType extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,7 +41,7 @@ public class Report extends Activity {
 
         GridView gridView = (GridView)findViewById(R.id.gridview);
         // Create the Custom Adapter Object
-        ReportAdapter reportAdapter = new ReportAdapter(this);
+        ReportTypeAdapter reportAdapter = new ReportTypeAdapter(this);
         // Set the Adapter to GridView
         gridView.setAdapter(reportAdapter);
 
@@ -48,6 +49,16 @@ public class Report extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent reportLocationScreen = new Intent(getApplicationContext(), ReportLocation.class);
+
+
+                Context context = getApplicationContext();
+                CharSequence text = "Be brave enough to report the location!";
+                int duration = Toast.LENGTH_LONG;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+
+                Globals.harassmentTypeId = view.getId();
                 startActivity(reportLocationScreen);
             }
 
@@ -60,12 +71,12 @@ public class Report extends Activity {
      *
      */
 
-    private class ReportAdapter extends BaseAdapter
+    private class ReportTypeAdapter extends BaseAdapter
     {
         private final Context contextReport;
         private final List<String> urlsButtonPics = new ArrayList<>();
 
-        public ReportAdapter(Context contextReport)
+        public ReportTypeAdapter(Context contextReport)
         {
             this.contextReport = contextReport;
 
@@ -145,6 +156,7 @@ public class Report extends Activity {
             CircledImageView view = (CircledImageView) convertView;
             if (view == null) {
                 view = new CircledImageView(contextReport);
+                view.setId(position);
 
             }
 

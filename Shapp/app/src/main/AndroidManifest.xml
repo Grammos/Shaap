@@ -11,21 +11,22 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:largeHeap="true">
+
         <activity
             android:name=".MainScreen"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".Report">
+        <activity android:name=".ReportType">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="shapp.odk.org.shapp.Report"/>
+                android:value=".ReportType"/>
             <intent-filter>
                 <action android:name="shapp.odk.org.shapp.Report" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -38,6 +39,16 @@
                 android:value="shapp.odk.org.shapp.ReportLocation"/>
             <intent-filter>
                 <action android:name="shapp.odk.org.shapp.ReportLocation" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".NarrativeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="shapp.odk.org.shapp.NarrativeActivity"/>
+            <intent-filter>
+                <action android:name="shapp.odk.org.shapp.NarrativeActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -92,8 +103,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-
 
     </application>
 </manifest>

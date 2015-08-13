@@ -22,7 +22,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "shapp.odk.org.shapp.Report"/>
+        className = "shapp.odk.org.shapp.ReportType"/>
       <point      
         x = "1768"      
         y = "100"/>

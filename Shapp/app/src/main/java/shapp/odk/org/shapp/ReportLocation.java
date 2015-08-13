@@ -3,12 +3,15 @@ package shapp.odk.org.shapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -42,6 +45,31 @@ public class ReportLocation extends Activity {
         ReportLocationAdapter reportLocationAdapter = new ReportLocationAdapter(this);
         // Set the Adapter to GridView
         gridView.setAdapter(reportLocationAdapter);
+
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent narrativeIntent = new Intent(getApplicationContext(), NarrativeActivity.class);
+
+
+                Context context = getApplicationContext();
+                CharSequence text = "What's the story?";
+                int duration = Toast.LENGTH_LONG;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+
+                Globals.locationId = view.getId();
+                startActivity(narrativeIntent);
+            }
+
+        });
+
+
+        Log.d("", "The harassment type is: " + Globals.harassmentTypeId);
+
+
 
     }
 
@@ -81,8 +109,6 @@ public class ReportLocation extends Activity {
 
                         inputStream.close();
                         reportLocationScreen = stringBuilder.toString();
-
-                        //Log.d("QAO QAO",""+ret);
                     }
                 }
                 catch (FileNotFoundException e) {
@@ -95,7 +121,6 @@ public class ReportLocation extends Activity {
 
 
                 JSONObject harassmentJsonArrayReportLoc= new JSONObject(reportLocationScreen);
-                Log.d("KOSOVO",""+harassmentJsonArrayReportLoc);
                 JSONArray harassmentJsonTypesLoc =new JSONArray(harassmentJsonArrayReportLoc.getJSONObject("locations").getJSONArray("types").toString());
                 for (int i = 0; i < harassmentJsonTypesLoc.length(); i++) {
 
@@ -138,6 +163,7 @@ public class ReportLocation extends Activity {
             CircledImageView view = (CircledImageView) convertView;
             if (view == null) {
                 view = new CircledImageView(contextLocationReport);
+                view.setId(position);
 
             }
 

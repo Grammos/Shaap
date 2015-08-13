@@ -33,13 +33,13 @@ class RequestHandlerApi extends AsyncTask<String,String, String>{
             HttpURLConnection connMain = (HttpURLConnection)urlHarassmentApi.openConnection();
             connMain.setRequestProperty("Accept", "application/json");
             connMain.setRequestMethod("GET");
-            Log.d("Hello",""+connMain);
+            //Log.d("Hello",""+connMain);
 
-            /*
+
             if (connMain.getResponseCode() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : "
                         + connMain.getResponseCode());
-            }*/
+            }
 
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(connMain.getInputStream()));
