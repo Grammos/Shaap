@@ -63,10 +63,9 @@ public class CircledImageView extends ImageView {
 
     public static Bitmap getCircledCroppedBitmap(Bitmap bitmap, int radius) {
         Bitmap finalBitmap;
-        if (bitmap.getWidth() != radius || bitmap.getHeight() != radius) {
+        if (bitmap.getWidth() != radius || bitmap.getHeight() != radius)
             finalBitmap = Bitmap.createScaledBitmap(bitmap, radius, radius,
                     false);
-        }
         else
             finalBitmap = bitmap;
         Bitmap output = Bitmap.createBitmap(finalBitmap.getWidth(),

@@ -52,14 +52,14 @@ public class ReportLocation extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent narrativeIntent = new Intent(getApplicationContext(), NarrativeActivity.class);
 
-
+                /**
                 Context context = getApplicationContext();
                 CharSequence text = "What's the story?";
                 int duration = Toast.LENGTH_LONG;
 
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
-
+                */
                 Globals.locationId = view.getId();
                 startActivity(narrativeIntent);
             }

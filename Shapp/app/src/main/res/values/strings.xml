@@ -9,7 +9,8 @@
     <string name="analytics">It will show the analytics charts!</string>
     <string name="settings">Not specified yet!</string>
     <string name="contact">It will shows the contacts!</string>
-    <string name="GPS">Geo location</string>
+    <string name="tittle">What is your story?</string>
+    <string name="GPS">Report exact location: </string>
     <string name="OnOff">""</string>
     <string name="photo">Upload Photo</string>
     <string name="report_button">Report</string>
