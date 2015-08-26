@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -16,13 +14,22 @@ import android.widget.Switch;
 import android.widget.TableRow;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 
 
 public class NarrativeActivity extends Activity {
 
+
     private GPSTrackerButton gpsTrackerButton;
     private static final int RESULT_LOAD_IMG = 1;
+    private JSONObject harassmentGeoCoordinates;
 
 
 
@@ -39,20 +46,35 @@ public class NarrativeActivity extends Activity {
 
                 gpsTrackerButton = new GPSTrackerButton(NarrativeActivity.this);
 
-                if (isChecked) {
+                if (isChecked ) {
 
                     if (!gpsTrackerButton.canGetLocation()) {
 
                         gpsTrackerButton.showOneButtonDialog();
 
                     } else {
-                        double latitude = gpsTrackerButton.getLatitude();
-                        double longitude = gpsTrackerButton.getLongitude();
 
-                        Log.d("", "LAT" + latitude);
 
-                        // \n is for new line
-                        Toast.makeText(getApplicationContext(), "Your Location is -\nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+
+                        try {
+                            //The jsonObject for GPS coordinates
+                            harassmentGeoCoordinates = new JSONObject();
+
+                            double latitude = gpsTrackerButton.getLatitude();
+                            double longitude = gpsTrackerButton.getLongitude();
+
+                            harassmentGeoCoordinates.put("lat", latitude);
+                            harassmentGeoCoordinates.put("lng", longitude);
+
+                            Toast.makeText(getApplicationContext(), "Your Location is -\nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        //Log.d("", "KOSOVO" + harassmentGeoCoordinates);
+
+
                     }
 
                 } else {
@@ -105,6 +127,13 @@ public class NarrativeActivity extends Activity {
                 }
         );
 
+
+        //Timestamp from device
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        final String deviceTime =  simpleDateFormat.format(new Date(System.currentTimeMillis()));
+
+
+
         //Report button (the final one!)
         Button reportButton = (Button) findViewById(R.id.button_report);
         TableRow tableRow2 = (TableRow) reportButton.getParent();
@@ -113,64 +142,46 @@ public class NarrativeActivity extends Activity {
                     @Override
                     public void onClick(View report_button) {
 
-                        AlertDialog alertDialog = new AlertDialog.Builder(NarrativeActivity.this).create();
-                        alertDialog.setTitle("Hello Report");
-                        alertDialog.setMessage("Thanks for your report :)!");
-                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
 
-                                    }
-                                });
-                        alertDialog.show();
+                        // The jsonArray gathering all the jsonObjects
+                        JSONArray sendDataToApi = new JSONArray();
+
+                        try{
+                            // The "general" reporting harassment data
+                            JSONObject reportHarassment = new JSONObject();
+
+                            // The jsonObject for the harassment type and location
+                            JSONObject harassmentSuffering = new JSONObject();
+
+                            harassmentSuffering.put("type", Globals.harassmentTypeId);
+                            harassmentSuffering.put("location",  Globals.locationId);
+
+                            reportHarassment.put("harassment_suffering", harassmentSuffering);
+                            reportHarassment.put("coordinates", harassmentGeoCoordinates);
+                            reportHarassment.put("timestamp", deviceTime);
+
+                            sendDataToApi.put(reportHarassment);
+
+                           //System.out.println ("This are the infos:" + sendDataToApi);
+
+                            Toast.makeText(getApplicationContext(), "Thank You! Your report has been saved.", Toast.LENGTH_LONG).show();
+
+
+                        }catch (JSONException e){
+                            e.printStackTrace();
+
+                        }
+
+
 
                     }
                 }
         );
 
+
+
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode){
-            case RESULT_LOAD_IMG:
-                if(resultCode == Activity.RESULT_OK && data != null && data.getData() != null){
-
-                    try{
-
-                        Uri selectedImage = data.getData();
-                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                        Cursor cursor = getContentResolver().query(selectedImage,
-                                filePathColumn, null, null, null);
-                        cursor.moveToFirst();
-                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                        String picturePath = cursor.getString(columnIndex);
-                        cursor.close();
-
-                        //return image path to the Narrative Activity
-                        Intent returnFromGalleryIntent = new Intent();
-                        returnFromGalleryIntent.putExtra("picturePath", picturePath);
-                        setResult(RESULT_OK, returnFromGalleryIntent);
-                        finish();
-                    } catch (Exception e){
-                        e.printStackTrace();
-                        Intent returnFromGalleryIntent = new Intent();
-                        setResult(RESULT_CANCELED, returnFromGalleryIntent);
-                        finish();
-                    }
-
-                }else {
-
-                    Log.i("","RESULT_CANCELED");
-                    Intent returnFromGalleryIntent = new Intent();
-                    setResult(RESULT_CANCELED, returnFromGalleryIntent);
-                    finish();
-
-                }
-                break;   }
-    }
 
 
 }
